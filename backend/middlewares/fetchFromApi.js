@@ -26,11 +26,54 @@ const fetchPlanetByIdFromApi = async (req, res, next) => {
     req.planet = { fetchedPlanet };
     next();
   } catch (err) {
-    const error = new Error("Fetching planet with this id failed");
     console.log(err);
+    const error = new Error("Fetching planet with this id failed");
     error.code = 500;
     return next(error);
   }
 };
 
-module.exports = { fetchAllPlanetsFromApi, fetchPlanetByIdFromApi };
+const fetchResData = async (link) => {
+  let residentData;
+  try {
+    const response = await fetch(link);
+    residentData = await response.json();
+    return residentData;
+  } catch (err) {
+    console.log(err);
+    const error = new Error("Fetching resident data of a planet failed");
+    return {error: error.message};
+  }
+};
+
+const fetchResidents = async (req, res, next) => {
+  const planetFromApi = await req.planet.fetchedPlanet;
+  const linksOfResidents = [
+    "https://swapi.dev/api/people/5/",
+    "https://swapi.dev/api/people/68/",
+    "https://swapi.dev/api/peope/81/",
+  ];
+
+  let fetchedResidentsData;
+
+  fetchedResidentsData = await Promise.all(
+    linksOfResidents.map(async (link) => {
+      try {
+        return await fetchResData(link);
+      } catch (err) {
+        const error = new Error("bibiiiii");
+        return next(error);
+      }
+    })
+  );
+
+  console.log(fetchedResidentsData);
+  req.residents = { fetchedResidentsData };
+  next();
+};
+
+module.exports = {
+  fetchAllPlanetsFromApi,
+  fetchPlanetByIdFromApi,
+  fetchResidents,
+};
