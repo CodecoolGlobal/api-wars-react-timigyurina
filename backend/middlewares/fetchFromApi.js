@@ -23,6 +23,7 @@ const fetchPlanetByIdFromApi = async (req, res, next) => {
     );
     fetchedPlanet = await response.json();
 
+    //add some other data to the req object and then allow it to continue its journey
     req.planet = { fetchedPlanet };
     next();
   } catch (err) {
@@ -40,14 +41,16 @@ const fetchResData = async (link) => {
     residentData = await response.json();
     return residentData;
   } catch (err) {
-    const error = new Error(`Fetching resident data of planet with link ${link} failed`);
-    throw error
+    const error = new Error(
+      `Fetching resident data of planet with link ${link} failed`
+    );
+    throw error;
   }
 };
 
 const fetchResidents = async (req, res, next) => {
   const planetFromApi = await req.planet.fetchedPlanet;
-  const linksOfResidents = planetFromApi.residents
+  const linksOfResidents = planetFromApi.residents;
 
   let fetchedResidentsData;
 
@@ -62,7 +65,7 @@ const fetchResidents = async (req, res, next) => {
       }
     })
   );
-
+  //add some other data to the req object and then allow it to continue its journey
   req.residents = { fetchedResidentsData };
   next();
 };

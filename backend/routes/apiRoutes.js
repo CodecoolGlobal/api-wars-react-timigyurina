@@ -16,7 +16,8 @@ router.get(
   fetchFromApi.fetchPlanetByIdFromApi,
   apiControllers.getPlanetById
 );
-//Here I use two midllewares: first for fetching the planet by id, then to get the links of the residents for that planet and fetch their data
+//Here I use more midllewares. FetchPlanetByIdFromApi fetches the planet by id and adds req.planet to the req object. 
+//FetchResidents gets the links of the residents for that planet and fetches their data, adds req.residents to the req object, then passes it to getResidentsOfPlanet.
 router.get(
   "/planets/:pid/residents",
   fetchFromApi.fetchPlanetByIdFromApi,
