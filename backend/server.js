@@ -8,16 +8,17 @@ const path = require("path");
 const address = "localhost"
 const port = process.env.PORT || 5000;
 const app = express();
-/* 
+
 const apiRoutes = require("./routes/apiRoutes");
+/* 
 const userRoutes = require("./routes/userRoutes");
  */
 //app.use(cors());
 //app.use(express.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-/* 
 app.use("/api", apiRoutes);
+/* 
 app.use("/user", userRoutes);
  */
 app.get("/", (req, res) => {
