@@ -3,8 +3,16 @@ const mongoose = require("mongoose");
 const Vote = require("../models/vote");
 const User = require("../models/user");
 
-const getAllVotes = (req, res, next) => {
-  res.json("ok");
+const getAllVotes = async (req, res, next) => {
+  let allVotes;
+  try {
+    allVotes = await Vote.find().lean();
+  } catch (err) {
+    const error = new Error("Could not get votes, maybe later");
+    return next(error);
+  }
+
+  res.json(allVotes)
 };
 
 const voteOnPlanet = async (req, res, next) => {
@@ -46,9 +54,7 @@ const voteOnPlanet = async (req, res, next) => {
     await existingUser.save({ session: currentSession });
     await currentSession.commitTransaction();
   } catch (err) {
-    const error = new Error(
-      "Creating vote failed, please try again"
-    );
+    const error = new Error("Creating vote failed, please try again");
     console.log(err);
     return next(error);
   }
