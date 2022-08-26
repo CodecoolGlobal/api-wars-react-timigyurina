@@ -5,30 +5,31 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 
-const address = "localhost"
+const address = "localhost";
 const port = process.env.PORT || 5000;
 const app = express();
 
 const apiRoutes = require("./routes/apiRoutes");
-/* 
 const userRoutes = require("./routes/userRoutes");
- */
+const votingRoutes = require("./routes/votingRoutes");
+
 //app.use(cors());
 //app.use(express.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 app.use("/api", apiRoutes);
-/* 
 app.use("/user", userRoutes);
- */
+app.use("/vote", votingRoutes);
+
 app.get("/", (req, res) => {
-  res.json("success")
+  res.json("success");
 });
 
-//mw for handling unsupported routes
+//Middleware for handling unsupported routes
 app.use((req, res, next) => {
   const error = new Error("Could not find this route");
-  error.code = 404
+  error.code = 404;
   throw error;
 });
 
