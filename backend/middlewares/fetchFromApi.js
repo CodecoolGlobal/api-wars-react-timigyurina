@@ -40,19 +40,14 @@ const fetchResData = async (link) => {
     residentData = await response.json();
     return residentData;
   } catch (err) {
-    console.log(err);
-    const error = new Error("Fetching resident data of a planet failed");
-    return {error: error.message};
+    const error = new Error(`Fetching resident data of planet with link ${link} failed`);
+    throw error
   }
 };
 
 const fetchResidents = async (req, res, next) => {
   const planetFromApi = await req.planet.fetchedPlanet;
-  const linksOfResidents = [
-    "https://swapi.dev/api/people/5/",
-    "https://swapi.dev/api/people/68/",
-    "https://swapi.dev/api/peope/81/",
-  ];
+  const linksOfResidents = planetFromApi.residents
 
   let fetchedResidentsData;
 
@@ -61,13 +56,13 @@ const fetchResidents = async (req, res, next) => {
       try {
         return await fetchResData(link);
       } catch (err) {
-        const error = new Error("bibiiiii");
+        console.log(err.message);
+        const error = new Error(err.message);
         return next(error);
       }
     })
   );
 
-  console.log(fetchedResidentsData);
   req.residents = { fetchedResidentsData };
   next();
 };

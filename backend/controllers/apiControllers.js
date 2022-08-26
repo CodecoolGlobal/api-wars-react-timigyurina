@@ -1,4 +1,3 @@
-
 const getAllPlanets = async (req, res, next) => {
   const planetsFromApi = await req.planets.planetsFromApi;
 
@@ -12,14 +11,17 @@ const getPlanetById = async (req, res, next) => {
 };
 
 const getResidentsOfPlanet = async (req, res, next) => {
-  //const planetId = req.params.pid;
-/*   const planetFromApi = await req.planet.fetchedPlanet;
-  const linksOfResidents = planetFromApi.residents */
-  const fetchedResidentsData = await req.residents.fetchedResidentsData
+
+  let fetchedResidentsData;
+  try {
+    fetchedResidentsData = await req.residents.fetchedResidentsData;
+  } catch (err) {
+    console.log(err);
+    const error = new Error("Fetching residents falied, please try again later");
+    return next(error);
+  }
 
   res.json(fetchedResidentsData);
 };
-
-
 
 module.exports = { getAllPlanets, getPlanetById, getResidentsOfPlanet };
