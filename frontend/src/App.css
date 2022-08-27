@@ -48,20 +48,28 @@ select {
 /* End of CSS reset */
 
 body {
-  background-color: lightgrey;
+  background-color: white;
 }
 
 #root {
   position: relative;
 }
 
-.registration-page {
+h1 {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.registration-page, .login-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
 
-.registration-title {
+.registration-title, .login-title {
   margin-top: 1em;
 }
+
+
+
