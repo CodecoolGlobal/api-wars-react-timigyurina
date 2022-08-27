@@ -10,13 +10,13 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-
 import Tooltip from "@mui/material/Tooltip";
-
 import PersonIcon from "@mui/icons-material/Person";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Navlinks from "./Navlinks";
 import PersonalLinks from "./PersonalLinks";
+
+import "./Navigation.css"
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);

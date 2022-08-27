@@ -1,0 +1,13 @@
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+
+    width: 70%;
+    padding: 1em;
+}
+
+.register-btn {
+    align-self: center;
+    width: 50%;
+}

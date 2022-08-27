@@ -1,8 +1,12 @@
 import React from 'react'
+import PlanetsTable from '../Components/TableElements/PlanetsTable'
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <div>
+      <h1>Planets of the Star Wars Universe</h1>
+      <PlanetsTable />
+    </div>
   )
 }
 
