@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import "./FormElements.css"
+import "./FormElements.css";
 
 const RegistrationForm = () => {
   const [registrationName, setRegistrationName] = useState("");
@@ -11,13 +11,23 @@ const RegistrationForm = () => {
 
   const register = (e) => {
     e.preventDefault();
-    const isValid = isValidEmail && registrationPassword.length > 5 && registrationName.length > 2
-    console.log(isValid);
+    let isValid = true
+    isValid =
+      isValidEmail &&
+      isMinLength(registrationName, 3) &&
+      isMinLength(registrationPassword, 6) 
+      console.log(isValid);
+  };
+
+  const isMinLength = (value, min) => {
+    let isValid = true;
+    isValid = value.trim().length >= min;
+    return isValid;
   };
 
   const validateEmail = (value) => {
-    let isValid = false;
-    isValid = /^\S+@\S+\.\S+$/.test(value);
+    let isValid = true;
+    isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
     return isValid;
   };
 
@@ -35,11 +45,10 @@ const RegistrationForm = () => {
         className="username"
         label="Name"
         placeholder="Write your name here"
-        error={registrationName.length < 3 ? true : false}
+        error={!isMinLength(registrationName, 3)}
         helperText={
-          registrationName.length < 3
-            ? "Your username should be at least 3 characters long"
-            : false
+          !isMinLength(registrationName, 3) &&
+          "Your username should be at least 3 characters long"
         }
         variant="standard"
       />
@@ -61,11 +70,10 @@ const RegistrationForm = () => {
         className="userpassword"
         label="Password"
         placeholder="Enter your password"
-        error={registrationPassword.length < 6 ? true : false}
+        error={!isMinLength(registrationPassword, 6)}
         helperText={
-          registrationPassword.length < 6
-            ? "Your password should be at least 6 characters long"
-            : false
+          !isMinLength(registrationPassword, 6) &&
+          "Your password should be at least 6 characters long"
         }
         variant="standard"
       />
@@ -73,8 +81,8 @@ const RegistrationForm = () => {
         type="submit"
         className="register-btn"
         disabled={
-          registrationName.length < 3 ||
-          registrationPassword.length < 6 ||
+          !isMinLength(registrationName, 3) ||
+          !isMinLength(registrationPassword, 6) ||
           !isValidEmail
         }
         variant="contained"

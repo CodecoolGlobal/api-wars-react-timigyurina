@@ -1,8 +1,12 @@
 import React from 'react'
+import LoginForm from '../Components/FormElements/LoginForm'
 
 const LoginPage = () => {
   return (
-    <div>LoginPage</div>
+    <div className="login-page">
+    <h1 className="login-title">Log in</h1>
+    <LoginForm />
+  </div>
   )
 }
 

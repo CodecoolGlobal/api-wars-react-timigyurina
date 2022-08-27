@@ -1,4 +1,4 @@
-.registration-form {
+.registration-form, .login-form {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
@@ -7,7 +7,7 @@
     padding: 1em;
 }
 
-.register-btn {
+.register-btn, .login-btn {
     align-self: center;
     width: 50%;
 }
