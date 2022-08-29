@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-//const cors = require("cors");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
 
@@ -13,7 +13,7 @@ const apiRoutes = require("./routes/apiRoutes");
 const userRoutes = require("./routes/userRoutes");
 const votingRoutes = require("./routes/votingRoutes");
 
-//app.use(cors());
+app.use(cors());
 //app.use(express.json());
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
