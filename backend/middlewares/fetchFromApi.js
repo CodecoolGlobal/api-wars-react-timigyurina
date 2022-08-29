@@ -2,7 +2,9 @@ const fetch = require("node-fetch");
 
 const fetchAllPlanetsFromApi = async (req, res, next) => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/planets`);
+    const response = await fetch(
+      `${process.env.API_BASE_URL}/planets/?page=${req.body.pageNum}`
+    );
     const planetsFromApi = await response.json();
 
     req.planets = { planetsFromApi };

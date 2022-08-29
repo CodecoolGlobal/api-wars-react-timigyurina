@@ -5,7 +5,7 @@ const apiControllers = require("../controllers/apiControllers");
 
 const router = express.Router();
 
-router.get(
+router.post(
   "/planets",
   fetchFromApi.fetchAllPlanetsFromApi,
   apiControllers.getAllPlanets
