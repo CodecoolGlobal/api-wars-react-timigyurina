@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import RegistrationPage from "./Pages/RegistrationPage";
@@ -10,9 +10,38 @@ import "./App.css";
 function App() {
   const [token, setToken] = useState(false);
   const [userId, setUserId] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState();
 
-  const login = () => {};
-  const logout = () => {};
+
+  const login = useCallback((uid, token, expirationDate) => {
+    setToken(token);
+    setUserId(uid);
+    //check if the token is still valid (on the backend we set it to expire in 1 hour) - We either have an expdate that is still valid or we set a new one
+/*     const tokenExpirationDate =
+      expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60); //genereates a Date object taht is now+1h
+    console.log(tokenExpirationDate);
+    setTokenExpirationDate(tokenExpirationDate);
+    //we can only write text and data that can be converted to text */
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        userId: uid,
+        token: token,
+/*         expiration:
+          new Date(tokenExpirationDate.toISOString()) + 2 * 1000 * 60 * 60, */
+      })
+    );
+    //expiration should have been tokenExpirationDate.toISOString() but that was -2hours off for me (maybe because of the timezone diff?)
+  }, []);
+  
+  const logout = useCallback(() => {
+    setToken(null);
+    //setTokenExpirationDate(null); //otherwise it would not let us login again
+    setUserId(null);
+    localStorage.removeItem("userData");
+  }, []);
 
   return (
     <AuthContext.Provider

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import "./FormElements.css";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import MessageModal from "../UIElements/MessageModal";
+import "./FormElements.css";
 
 const RegistrationForm = () => {
   const [registrationName, setRegistrationName] = useState("");
