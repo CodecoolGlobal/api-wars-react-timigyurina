@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoadingSpinner from "../Components/UIElements/LoadingSpinner";
 import { PlanetsTable } from "../Components/TableElements/PlanetsTable";
 import PaginationControlled from "../Components/UIElements/PaginationControlled";
-import ErrorModal from "../Components/UIElements/ErrorModal";
+import MessageModal from "../Components/UIElements/MessageModal";
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +66,7 @@ const HomePage = () => {
           <LoadingSpinner asOverlay />
         </div>
       ) : error ? (
-        <ErrorModal error={error} onClear={clearError} />
+        <MessageModal message={error} onClear={clearError} itIsAnError/>
       ) : (
         <>
           <PlanetsTable

@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import ResidentsModal from "../UIElements/ResidentsModal";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
-import ErrorModal from "../UIElements/ErrorModal";
+import MessageModal from "../UIElements/MessageModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -102,7 +102,7 @@ export const PlanetsTable = ({ planets }) => {
           <LoadingSpinner asOverlay />
         </div>
       ) : error ? (
-        <ErrorModal error={error} onClear={clearError}/>
+        <MessageModal message={error} onClear={clearError} itIsAnError/>
       ) : (
         <ResidentsModal
           planet={nameOfLoadedPlanet}

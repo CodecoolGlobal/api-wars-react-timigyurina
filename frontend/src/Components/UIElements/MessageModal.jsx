@@ -17,12 +17,12 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #c62828",
+  border: "2px solid black",
   boxShadow: 24,
   p: 4,
 };
 
-const ErrorModal = ({ error, onClear, moreMessage }) => {
+const MessageModal = ({ message, onClear, moreMessage, itIsAnError }) => {
   const [open, setOpen] = useState(true);
   /*  const handleOpen = () => setOpen(true); */
   const handleClose = () => {
@@ -46,8 +46,13 @@ const ErrorModal = ({ error, onClear, moreMessage }) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              {error}
+            <Typography
+              id="transition-modal-title"
+              variant="h6"
+              component="h2"
+              sx={itIsAnError && { color: "#c62828" }}
+            >
+              {message}
             </Typography>
             {moreMessage && (
               <Typography id="transition-modal-description" sx={{ mt: 2 }}>
@@ -57,7 +62,7 @@ const ErrorModal = ({ error, onClear, moreMessage }) => {
             <Button
               onClick={handleClose}
               variant="outlined"
-              color="error"
+              color={itIsAnError ? "error" : "primary"}
             >
               Close
             </Button>
@@ -68,4 +73,4 @@ const ErrorModal = ({ error, onClear, moreMessage }) => {
   );
 };
 
-export default ErrorModal;
+export default MessageModal;
