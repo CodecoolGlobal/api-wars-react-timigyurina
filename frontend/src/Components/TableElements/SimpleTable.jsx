@@ -34,6 +34,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export const SimpleTable = ({ planets }) => {
   const auth = useContext(AuthContext);
 
+  const formatPopulation = (population) => {
+    const formatted = parseInt(population).toLocaleString();
+    return isNaN(parseInt(formatted)) ? "unknown" : `${formatted} people`;
+  };
+
+  const emphasisedItem = {
+    fontSize: "16px",
+    fontWeight: "700",
+  };
+
   return (
     <TableContainer component={Paper} className="table-container">
       <Table
@@ -43,7 +53,7 @@ export const SimpleTable = ({ planets }) => {
       >
         <TableHead>
           <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell sx={emphasisedItem}>Name</StyledTableCell>
             <StyledTableCell align="center">Diameter</StyledTableCell>
             <StyledTableCell align="center">Climate</StyledTableCell>
             <StyledTableCell align="center">Terrain</StyledTableCell>
@@ -60,18 +70,24 @@ export const SimpleTable = ({ planets }) => {
         <TableBody>
           {planets.map((row) => (
             <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
+              <StyledTableCell component="th" scope="row" sx={emphasisedItem}>
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="center">{row.diameter}</StyledTableCell>
+              <StyledTableCell align="center">
+                {row.diameter} km
+              </StyledTableCell>
               <StyledTableCell align="center">{row.climate}</StyledTableCell>
               <StyledTableCell align="center">{row.terrain}</StyledTableCell>
               <StyledTableCell align="center">
-                {row.surface_water}
+                {row.surface_water === "unknown"
+                  ? row.surface_water
+                  : row.surface_water + "%"}
               </StyledTableCell>
-              <StyledTableCell align="center">{row.population}</StyledTableCell>
               <StyledTableCell align="center">
-                {row.residents.length > 0 && (
+                {formatPopulation(row.population)}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {row.residents.length > 0 ? (
                   <Button
                     size="small"
                     variant="outlined"
@@ -80,6 +96,8 @@ export const SimpleTable = ({ planets }) => {
                     {row.residents.length}{" "}
                     {row.residents.length > 1 ? "residents" : "resident"}
                   </Button>
+                ) : (
+                  "No known residents"
                 )}
               </StyledTableCell>
               {!auth.isLoggedIn && (
