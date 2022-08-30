@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import RegistrationPage from "./Pages/RegistrationPage";
@@ -15,7 +15,7 @@ function App() {
     setToken(token);
     setUserId(uid);
     //check if the token is still valid (on the backend we set it to expire in 1 hour) - We either have an expdate that is still valid or we set a new one
-/*     const tokenExpirationDate =
+    /*     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 60); //genereates a Date object taht is now+1h
     console.log(tokenExpirationDate);
     setTokenExpirationDate(tokenExpirationDate);
@@ -25,19 +25,39 @@ function App() {
       JSON.stringify({
         userId: uid,
         token: token,
-/*         expiration:
+        /*         expiration:
           new Date(tokenExpirationDate.toISOString()) + 2 * 1000 * 60 * 60, */
       })
     );
     //expiration should have been tokenExpirationDate.toISOString() but that was -2hours off for me (maybe because of the timezone diff?)
   }, []);
-  
+
   const logout = useCallback(() => {
     setToken(null);
     //setTokenExpirationDate(null); //otherwise it would not let us login again
     setUserId(null);
     localStorage.removeItem("userData");
   }, []);
+
+  //This will run after React has already rendered the App component (in the default unathorized state)
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    //if we have stored data in localStorage, then we can log the user in
+    //also check if we have an expirationDate and that the date for this exp is greater than the current timestamp
+    if (
+      storedData &&
+      storedData.token /*&&
+       new Date(storedData.expiration) > new Date() */
+    ) {
+      login(
+        storedData.userId,
+        storedData.token,
+        /* new Date(storedData.expiration) */
+      );
+    } else {
+      console.log("nope");
+    }
+  }, [login]);
 
   return (
     <AuthContext.Provider
