@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import PlanetsTable from "../Components/TableElements/PlanetsTable";
 import LoadingSpinner from "../Components/UIElements/LoadingSpinner";
-import { SimpleTable } from "../Components/TableElements/SimpleTable";
+import { PlanetsTable } from "../Components/TableElements/PlanetsTable";
 import PaginationControlled from "../Components/UIElements/PaginationControlled";
 import ErrorModal from "../Components/UIElements/ErrorModal";
 
@@ -70,7 +69,7 @@ const HomePage = () => {
         <ErrorModal error={error} onClear={clearError} />
       ) : (
         <>
-          <SimpleTable
+          <PlanetsTable
             planets={loadedPlanets}
             /* onResidentsButtonClick={(id) => openResidentsModal(id)} */
           />
