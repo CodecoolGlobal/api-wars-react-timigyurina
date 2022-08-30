@@ -35,6 +35,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export const SimpleTable = ({ planets }) => {
   const auth = useContext(AuthContext);
   const [residentsModalIsOpen, setResidentsModalIsOpen] = useState(false);
+  const [loadedResidents, setLoadedResidents] = useState([]);
+  const [nameOfLoadedPlanet, setNameOfLoadedPlanet] = useState("");
 
   const formatPopulation = (population) => {
     const formatted = parseInt(population).toLocaleString();
@@ -46,11 +48,39 @@ export const SimpleTable = ({ planets }) => {
     fontWeight: "700",
   };
 
-  const residentsButtonClicked = (urlOfPlanet) => {
+  const fetchResidents = async (planetId) => {
+    //setIsLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/planets/${planetId}/residents`
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      //console.log(data);
+
+      setLoadedResidents(data);
+      //setIsLoading(false);
+      return data;
+    } catch (err) {
+      console.log(err);
+      //setError(err.message);
+      //setIsLoading(false);
+      //throw err;
+    }
+  };
+
+  const residentsButtonClicked = async (urlOfPlanet, nameOfPlanet) => {
     const arr = urlOfPlanet.split("/");
     const idOfPlanet = arr[arr.length - 2];
-    console.log(idOfPlanet);
-    setResidentsModalIsOpen(!residentsModalIsOpen);
+
+    setNameOfLoadedPlanet(nameOfPlanet);
+    const residents = await fetchResidents(idOfPlanet);
+    console.log(residents);
+
+    setResidentsModalIsOpen(true);
   };
 
   const closeResidentsModal = () => {
@@ -60,6 +90,8 @@ export const SimpleTable = ({ planets }) => {
   return (
     <TableContainer component={Paper} className="table-container">
       <ResidentsModal
+        planet={nameOfLoadedPlanet}
+        residents={loadedResidents}
         residentsModalIsOpenedFromParent={residentsModalIsOpen}
         parentCallback={closeResidentsModal}
       />
@@ -109,7 +141,9 @@ export const SimpleTable = ({ planets }) => {
                     size="small"
                     variant="outlined"
                     style={{ fontSize: "10px" }}
-                    onClick={() => residentsButtonClicked(planet.url)}
+                    onClick={() =>
+                      residentsButtonClicked(planet.url, planet.name)
+                    }
                   >
                     {planet.residents.length}{" "}
                     {planet.residents.length > 1 ? "residents" : "resident"}
