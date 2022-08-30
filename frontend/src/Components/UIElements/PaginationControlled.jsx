@@ -10,8 +10,15 @@ const PaginationControlled = ({ val, page, onChange, pageCount }) => {
     }; 
   */
 
+  const style = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    margin: "15px"
+  };
+
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={style}>
       <Typography>Page: {page}</Typography>
       <Pagination
         count={pageCount}

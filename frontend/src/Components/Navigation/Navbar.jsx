@@ -39,7 +39,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" id="navbar">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AutoAwesomeIcon

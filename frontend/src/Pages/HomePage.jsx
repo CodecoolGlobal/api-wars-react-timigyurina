@@ -3,23 +3,26 @@ import PlanetsTable from "../Components/TableElements/PlanetsTable";
 import LoadingSpinner from "../Components/UIElements/LoadingSpinner";
 import { SimpleTable } from "../Components/TableElements/SimpleTable";
 import PaginationControlled from "../Components/UIElements/PaginationControlled";
+import ErrorModal from "../Components/UIElements/ErrorModal";
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [loadedPlanets, setLoadedPlanets] = useState([]);
-
   const [page, setPage] = useState(1);
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
 
-  const [url, setUrl] = useState("http://localhost:5000/api/planets");
+  const clearError = () => {
+    setError(null);
+  };
 
   const fetchPlanets = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(url, {
+      const response = await fetch("http://localhost:5000/api/planets", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -57,15 +60,17 @@ const HomePage = () => {
         <div className="center">
           <LoadingSpinner asOverlay />
         </div>
+      ) : error ? (
+        <ErrorModal error={error} onClear={clearError} />
       ) : (
         <>
+          <SimpleTable planets={loadedPlanets} />
           <PaginationControlled
             val={page}
             page={page}
             onChange={handlePageChange}
             pageCount={6}
           />
-          <SimpleTable planets={loadedPlanets} />
         </>
       )}
       {/* <PlanetsTable planets={loadedPlanets} /> */}
