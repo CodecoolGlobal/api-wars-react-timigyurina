@@ -11,6 +11,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import ResidentsModal from "../UIElements/ResidentsModal";
+import LoadingSpinner from "../UIElements/LoadingSpinner";
+import ErrorModal from "../UIElements/ErrorModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -34,9 +36,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export const SimpleTable = ({ planets }) => {
   const auth = useContext(AuthContext);
+
   const [residentsModalIsOpen, setResidentsModalIsOpen] = useState(false);
   const [loadedResidents, setLoadedResidents] = useState([]);
   const [nameOfLoadedPlanet, setNameOfLoadedPlanet] = useState("");
+  const [isModalLoading, setIsModalLoading] = useState(false);
+  const [error, setError] = useState();
 
   const formatPopulation = (population) => {
     const formatted = parseInt(population).toLocaleString();
@@ -49,7 +54,7 @@ export const SimpleTable = ({ planets }) => {
   };
 
   const fetchResidents = async (planetId) => {
-    //setIsLoading(true);
+    setIsModalLoading(true);
     try {
       const response = await fetch(
         `http://localhost:5000/api/planets/${planetId}/residents`
@@ -60,15 +65,14 @@ export const SimpleTable = ({ planets }) => {
         throw new Error(data.message);
       }
       //console.log(data);
-
       setLoadedResidents(data);
-      //setIsLoading(false);
+      setIsModalLoading(false);
       return data;
     } catch (err) {
       console.log(err);
-      //setError(err.message);
-      //setIsLoading(false);
-      //throw err;
+      setError(err.message);
+      setIsModalLoading(false);
+      throw err;
     }
   };
 
@@ -87,82 +91,100 @@ export const SimpleTable = ({ planets }) => {
     setResidentsModalIsOpen(false);
   };
 
+  const clearError = () => {
+    setError(null);
+  };
+
   return (
-    <TableContainer component={Paper} className="table-container">
-      <ResidentsModal
-        planet={nameOfLoadedPlanet}
-        residents={loadedResidents}
-        residentsModalIsOpenedFromParent={residentsModalIsOpen}
-        parentCallback={closeResidentsModal}
-      />
-      <Table
-        sx={{ minWidth: 700 }}
-        aria-label="customized table"
-        id="planetsTable"
-      >
-        <TableHead>
-          <TableRow>
-            <StyledTableCell sx={emphasisedItem}>Name</StyledTableCell>
-            <StyledTableCell align="center">Diameter</StyledTableCell>
-            <StyledTableCell align="center">Climate</StyledTableCell>
-            <StyledTableCell align="center">Terrain</StyledTableCell>
-            <StyledTableCell align="center">
-              Surface Water Percentage
-            </StyledTableCell>
-            <StyledTableCell align="center">Population</StyledTableCell>
-            <StyledTableCell align="center">Residents</StyledTableCell>
-            {!auth.isLoggedIn && (
-              <StyledTableCell align="center">Vote</StyledTableCell>
-            )}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {planets.map((planet) => (
-            <StyledTableRow key={planet.name}>
-              <StyledTableCell component="th" scope="row" sx={emphasisedItem}>
-                {planet.name}
-              </StyledTableCell>
+    <>
+      {isModalLoading ? (
+        <div className="center">
+          <LoadingSpinner asOverlay />
+        </div>
+      ) : error ? (
+        <ErrorModal error={error} onClear={clearError}/>
+      ) : (
+        <ResidentsModal
+          planet={nameOfLoadedPlanet}
+          residents={loadedResidents}
+          residentsModalIsOpenedFromParent={residentsModalIsOpen}
+          parentCallback={closeResidentsModal}
+        />
+      )}
+      <TableContainer component={Paper} className="table-container">
+        <Table
+          sx={{ minWidth: 700 }}
+          aria-label="customized table"
+          id="planetsTable"
+        >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell sx={emphasisedItem}>Name</StyledTableCell>
+              <StyledTableCell align="center">Diameter</StyledTableCell>
+              <StyledTableCell align="center">Climate</StyledTableCell>
+              <StyledTableCell align="center">Terrain</StyledTableCell>
               <StyledTableCell align="center">
-                {planet.diameter} km
+                Surface Water Percentage
               </StyledTableCell>
-              <StyledTableCell align="center">{planet.climate}</StyledTableCell>
-              <StyledTableCell align="center">{planet.terrain}</StyledTableCell>
-              <StyledTableCell align="center">
-                {planet.surface_water === "unknown"
-                  ? planet.surface_water
-                  : planet.surface_water + "%"}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {formatPopulation(planet.population)}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {planet.residents.length > 0 ? (
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    style={{ fontSize: "10px" }}
-                    onClick={() =>
-                      residentsButtonClicked(planet.url, planet.name)
-                    }
-                  >
-                    {planet.residents.length}{" "}
-                    {planet.residents.length > 1 ? "residents" : "resident"}
-                  </Button>
-                ) : (
-                  "No known residents"
-                )}
-              </StyledTableCell>
+              <StyledTableCell align="center">Population</StyledTableCell>
+              <StyledTableCell align="center">Residents</StyledTableCell>
               {!auth.isLoggedIn && (
-                <StyledTableCell align="center">
-                  <Button size="small" variant="contained">
-                    Vote
-                  </Button>
-                </StyledTableCell>
+                <StyledTableCell align="center">Vote</StyledTableCell>
               )}
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {planets.map((planet) => (
+              <StyledTableRow key={planet.name}>
+                <StyledTableCell component="th" scope="row" sx={emphasisedItem}>
+                  {planet.name}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {planet.diameter} km
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {planet.climate}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {planet.terrain}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {planet.surface_water === "unknown"
+                    ? planet.surface_water
+                    : planet.surface_water + "%"}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {formatPopulation(planet.population)}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {planet.residents.length > 0 ? (
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      style={{ fontSize: "10px" }}
+                      onClick={() =>
+                        residentsButtonClicked(planet.url, planet.name)
+                      }
+                    >
+                      {planet.residents.length}{" "}
+                      {planet.residents.length > 1 ? "residents" : "resident"}
+                    </Button>
+                  ) : (
+                    "No known residents"
+                  )}
+                </StyledTableCell>
+                {!auth.isLoggedIn && (
+                  <StyledTableCell align="center">
+                    <Button size="small" variant="contained">
+                      Vote
+                    </Button>
+                  </StyledTableCell>
+                )}
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };

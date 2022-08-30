@@ -6,6 +6,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
+const emphasisedItem = {
+  fontSize: "16px",
+  fontWeight: "700",
+};
+
 const ResidentsTable = ({ residents }) => {
   return (
     <div>
@@ -13,14 +18,28 @@ const ResidentsTable = ({ residents }) => {
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="center">Height</TableCell>
-              <TableCell align="center">Mass</TableCell>
-              <TableCell align="center">Hair colour</TableCell>
-              <TableCell align="center">Skin colour</TableCell>
-              <TableCell align="center">Eye colour</TableCell>
-              <TableCell align="center">Birth year</TableCell>
-              <TableCell align="center">Gender</TableCell>
+              <TableCell sx={emphasisedItem}>Name</TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Height
+              </TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Mass
+              </TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Hair colour
+              </TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Skin colour
+              </TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Eye colour
+              </TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Birth year
+              </TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Gender
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
