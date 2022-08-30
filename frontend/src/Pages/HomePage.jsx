@@ -53,6 +53,12 @@ const HomePage = () => {
     fetchPlanets();
   }, [page]);
 
+/*   const openResidentsModal = (urlOfPlanet) => {
+    const arr = urlOfPlanet.split("/")
+    const idOfPlanet = arr[arr.length-2]
+    console.log(idOfPlanet);
+  }; */
+
   return (
     <div className="home-page">
       <h1>Planets of the Star Wars Universe</h1>
@@ -64,7 +70,10 @@ const HomePage = () => {
         <ErrorModal error={error} onClear={clearError} />
       ) : (
         <>
-          <SimpleTable planets={loadedPlanets} />
+          <SimpleTable
+            planets={loadedPlanets}
+            /* onResidentsButtonClick={(id) => openResidentsModal(id)} */
+          />
           <PaginationControlled
             val={page}
             page={page}

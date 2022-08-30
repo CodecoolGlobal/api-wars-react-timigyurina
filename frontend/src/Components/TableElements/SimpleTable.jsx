@@ -10,6 +10,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import ResidentsModal from "../UIElements/ResidentsModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,6 +34,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export const SimpleTable = ({ planets }) => {
   const auth = useContext(AuthContext);
+  const [residentsModalIsOpen, setResidentsModalIsOpen] = useState(false);
 
   const formatPopulation = (population) => {
     const formatted = parseInt(population).toLocaleString();
@@ -44,8 +46,23 @@ export const SimpleTable = ({ planets }) => {
     fontWeight: "700",
   };
 
+  const residentsButtonClicked = (urlOfPlanet) => {
+    const arr = urlOfPlanet.split("/");
+    const idOfPlanet = arr[arr.length - 2];
+    console.log(idOfPlanet);
+    setResidentsModalIsOpen(!residentsModalIsOpen);
+  };
+
+  const closeResidentsModal = () => {
+    setResidentsModalIsOpen(false);
+  };
+
   return (
     <TableContainer component={Paper} className="table-container">
+      <ResidentsModal
+        residentsModalIsOpenedFromParent={residentsModalIsOpen}
+        parentCallback={closeResidentsModal}
+      />
       <Table
         sx={{ minWidth: 700 }}
         aria-label="customized table"
@@ -68,33 +85,34 @@ export const SimpleTable = ({ planets }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {planets.map((row) => (
-            <StyledTableRow key={row.name}>
+          {planets.map((planet) => (
+            <StyledTableRow key={planet.name}>
               <StyledTableCell component="th" scope="row" sx={emphasisedItem}>
-                {row.name}
+                {planet.name}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row.diameter} km
+                {planet.diameter} km
               </StyledTableCell>
-              <StyledTableCell align="center">{row.climate}</StyledTableCell>
-              <StyledTableCell align="center">{row.terrain}</StyledTableCell>
+              <StyledTableCell align="center">{planet.climate}</StyledTableCell>
+              <StyledTableCell align="center">{planet.terrain}</StyledTableCell>
               <StyledTableCell align="center">
-                {row.surface_water === "unknown"
-                  ? row.surface_water
-                  : row.surface_water + "%"}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {formatPopulation(row.population)}
+                {planet.surface_water === "unknown"
+                  ? planet.surface_water
+                  : planet.surface_water + "%"}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row.residents.length > 0 ? (
+                {formatPopulation(planet.population)}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                {planet.residents.length > 0 ? (
                   <Button
                     size="small"
                     variant="outlined"
                     style={{ fontSize: "10px" }}
+                    onClick={() => residentsButtonClicked(planet.url)}
                   >
-                    {row.residents.length}{" "}
-                    {row.residents.length > 1 ? "residents" : "resident"}
+                    {planet.residents.length}{" "}
+                    {planet.residents.length > 1 ? "residents" : "resident"}
                   </Button>
                 ) : (
                   "No known residents"
