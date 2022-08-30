@@ -22,7 +22,13 @@ const style = {
   p: 4,
 };
 
-const MessageModal = ({ message, onClear, moreMessage, itIsAnError }) => {
+const MessageModal = ({
+  message,
+  onClear,
+  moreMessage,
+  buttonText = "Close",
+  itIsAnError,
+}) => {
   const [open, setOpen] = useState(true);
   /*  const handleOpen = () => setOpen(true); */
   const handleClose = () => {
@@ -64,7 +70,7 @@ const MessageModal = ({ message, onClear, moreMessage, itIsAnError }) => {
               variant="outlined"
               color={itIsAnError ? "error" : "primary"}
             >
-              Close
+              {buttonText}
             </Button>
           </Box>
         </Fade>

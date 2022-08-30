@@ -128,7 +128,7 @@ export const PlanetsTable = ({ planets }) => {
               </StyledTableCell>
               <StyledTableCell align="center">Population</StyledTableCell>
               <StyledTableCell align="center">Residents</StyledTableCell>
-              {!auth.isLoggedIn && (
+              {auth.isLoggedIn && (
                 <StyledTableCell align="center">Vote</StyledTableCell>
               )}
             </TableRow>
@@ -173,7 +173,7 @@ export const PlanetsTable = ({ planets }) => {
                     "No known residents"
                   )}
                 </StyledTableCell>
-                {!auth.isLoggedIn && (
+                {auth.isLoggedIn && (
                   <StyledTableCell align="center">
                     <Button size="small" variant="contained">
                       Vote

@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../HooksAndContext/auth-context";
 
-const Navlinks = ({isMobile}) => {
+const Navlinks = ({ isMobile }) => {
   const auth = useContext(AuthContext);
   const openStatistics = () => {
     console.log("open stats modal");
@@ -14,11 +14,10 @@ const Navlinks = ({isMobile}) => {
       <li>
         <NavLink to="/">Planet List</NavLink>
       </li>
-      {!auth.isLoggedIn && (
-        <li>
-          <button onClick={openStatistics}>Voting statistics</button>
-        </li>
-      )}
+      <li>
+        <button onClick={openStatistics}>Voting statistics</button>
+      </li>
+
       {!auth.isLoggedIn && (
         <li>
           <NavLink to="/register">Registration</NavLink>
@@ -29,7 +28,7 @@ const Navlinks = ({isMobile}) => {
           <NavLink to="/login">Login</NavLink>
         </li>
       )}
-      {!auth.isLoggedIn && (
+      {auth.isLoggedIn && (
         <li>
           <button onClick={auth.logout}>Logout</button>
         </li>

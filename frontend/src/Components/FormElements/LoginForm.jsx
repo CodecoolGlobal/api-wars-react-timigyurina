@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const [error, setError] = useState();
   const [success, setSuccess] = useState();
   const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const isMinLength = (value, min) => {
     let isValid = true;
@@ -64,6 +66,7 @@ const LoginForm = () => {
 
   const clearSuccess = () => {
     setSuccess(null);
+    navigate("/", { replace: true });
   };
 
   const clearInputs = () => {
@@ -80,7 +83,7 @@ const LoginForm = () => {
       ) : error ? (
         <MessageModal message={error} onClear={clearError} itIsAnError />
       ) : success ? (
-        <MessageModal message={success} onClear={clearSuccess} />
+        <MessageModal message={success} onClear={clearSuccess} buttonText="Go to list of planets"/>
       ) : (
         <form className="login-form" onSubmit={login}>
           <TextField

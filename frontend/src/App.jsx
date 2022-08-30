@@ -10,10 +10,6 @@ import "./App.css";
 function App() {
   const [token, setToken] = useState(false);
   const [userId, setUserId] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
-  const [success, setSuccess] = useState();
-
 
   const login = useCallback((uid, token, expirationDate) => {
     setToken(token);
