@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
@@ -13,6 +15,7 @@ const RegistrationForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [success, setSuccess] = useState();
+  const navigate = useNavigate();
 
   const register = async (e) => {
     e.preventDefault();
@@ -87,6 +90,7 @@ const RegistrationForm = () => {
 
   const clearSuccess = () => {
     setSuccess(null);
+    navigate("/login", { replace: true });
   };
 
   const clearInputs = () => {
