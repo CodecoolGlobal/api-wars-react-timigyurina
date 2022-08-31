@@ -1,13 +1,11 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../HooksAndContext/auth-context";
+import VotingStatsComponent from "../../Pages/VotingStatsComponent";
 
 const Navlinks = ({ isMobile }) => {
   const auth = useContext(AuthContext);
-  const openStatistics = () => {
-    console.log("open stats modal");
-  };
 
   return (
     <ul className={`nav-links ${isMobile && "nav-mobile"} `}>
@@ -15,7 +13,7 @@ const Navlinks = ({ isMobile }) => {
         <NavLink to="/">Planet List</NavLink>
       </li>
       <li>
-        <button onClick={openStatistics}>Voting statistics</button>
+        <VotingStatsComponent />
       </li>
 
       {!auth.isLoggedIn && (
