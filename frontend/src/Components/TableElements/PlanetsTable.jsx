@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../HooksAndContext/auth-context";
 
 import { styled } from "@mui/material/styles";
@@ -9,10 +9,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 import ResidentsModal from "../UIElements/ResidentsModal";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import MessageModal from "../UIElements/MessageModal";
+import DesktopTable from "./DesktopTable";
+import CollapsibleTable from "./CollapsibleTable";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -22,7 +23,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
     paddingRight: 5,
-    paddingLeft: 5
+    paddingLeft: 5,
   },
 }));
 
@@ -44,6 +45,17 @@ export const PlanetsTable = ({ planets }) => {
   const [nameOfLoadedPlanet, setNameOfLoadedPlanet] = useState("");
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [error, setError] = useState();
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 650);
+
+  /* Screen size handlers */
+  const updateMedia = () => {
+    setDesktop(window.innerWidth > 650);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
 
   const formatPopulation = (population) => {
     const formatted = parseInt(population).toLocaleString();
@@ -104,7 +116,7 @@ export const PlanetsTable = ({ planets }) => {
           <LoadingSpinner asOverlay />
         </div>
       ) : error ? (
-        <MessageModal message={error} onClear={clearError} itIsAnError/>
+        <MessageModal message={error} onClear={clearError} itIsAnError />
       ) : (
         <ResidentsModal
           planet={nameOfLoadedPlanet}
@@ -114,79 +126,21 @@ export const PlanetsTable = ({ planets }) => {
         />
       )}
       <TableContainer component={Paper} className="table-container">
-      
-        <Table
-          sx={{ minWidth: 350 }}
-          aria-label="customized table"
-          id="planetsTable"
-        >
-          <TableHead>
-            <TableRow>
-              <StyledTableCell sx={emphasisedItem}>Name</StyledTableCell>
-              <StyledTableCell align="center">Diameter</StyledTableCell>
-              <StyledTableCell align="center">Climate</StyledTableCell>
-              <StyledTableCell align="center">Terrain</StyledTableCell>
-              <StyledTableCell align="center">
-                Surface Water Percentage
-              </StyledTableCell>
-              <StyledTableCell align="center">Population</StyledTableCell>
-              <StyledTableCell align="center">Residents</StyledTableCell>
-              {auth.isLoggedIn && (
-                <StyledTableCell align="center">Vote</StyledTableCell>
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {planets.map((planet) => (
-              <StyledTableRow key={planet.name}>
-                <StyledTableCell component="th" scope="row" sx={emphasisedItem}>
-                  {planet.name}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {planet.diameter} km
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {planet.climate}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {planet.terrain}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {planet.surface_water === "unknown"
-                    ? planet.surface_water
-                    : planet.surface_water + "%"}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {formatPopulation(planet.population)}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {planet.residents.length > 0 ? (
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      style={{ fontSize: "10px" }}
-                      onClick={() =>
-                        residentsButtonClicked(planet.url, planet.name)
-                      }
-                    >
-                      {planet.residents.length}{" "}
-                      {planet.residents.length > 1 ? "residents" : "resident"}
-                    </Button>
-                  ) : (
-                    "No known residents"
-                  )}
-                </StyledTableCell>
-                {auth.isLoggedIn && (
-                  <StyledTableCell align="center">
-                    <Button size="small" variant="contained">
-                      Vote
-                    </Button>
-                  </StyledTableCell>
-                )}
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {isDesktop ? (
+          <DesktopTable
+            planets={planets}
+            auth={auth}
+            formatPopulation={formatPopulation}
+            residentsButtonClicked={residentsButtonClicked}
+          />
+        ) : (
+          <CollapsibleTable
+            planets={planets}
+            auth={auth}
+            formatPopulation={formatPopulation}
+            residentsButtonClicked={residentsButtonClicked}
+          />
+        )}
       </TableContainer>
     </>
   );

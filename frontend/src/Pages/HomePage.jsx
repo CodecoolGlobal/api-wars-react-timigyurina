@@ -10,17 +10,6 @@ const HomePage = () => {
   const [error, setError] = useState();
   const [loadedPlanets, setLoadedPlanets] = useState([]);
   const [page, setPage] = useState(1);
-  const [isDesktop, setDesktop] = useState(window.innerWidth > 650);
-
-  /* Screen size handlers */
-  const updateMedia = () => {
-    setDesktop(window.innerWidth > 650);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-  });
 
   /* Page-change and data-fetch handlers */
   const handlePageChange = (event, value) => {
@@ -76,11 +65,7 @@ const HomePage = () => {
         <MessageModal message={error} onClear={clearError} itIsAnError />
       ) : (
         <>
-          {isDesktop ? (
-            <PlanetsTable planets={loadedPlanets} />
-          ) : (
-            <div>small</div>
-          )}
+          <PlanetsTable planets={loadedPlanets} />
           <PaginationControlled
             val={page}
             page={page}
