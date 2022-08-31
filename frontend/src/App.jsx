@@ -14,6 +14,7 @@ function App() {
   const [userId, setUserId] = useState(false);
   const [username, setUsername] = useState(false);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
+  const [isLogoutMsgShown, setIsLogoutMsgShown] = useState(false);
 
   const login = useCallback((uid, uname, token, expirationDate) => {
     setToken(token);
@@ -43,6 +44,7 @@ function App() {
     setUserId(null);
     setUsername(null);
     localStorage.removeItem("userData");
+    setIsLogoutMsgShown(true);
   }, []);
 
   //Set logoutTimer whenever our token changes - either when the user logged in or when logged out

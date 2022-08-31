@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import LoadingSpinner from "../Components/UIElements/LoadingSpinner";
 import { PlanetsTable } from "../Components/TableElements/PlanetsTable";
 import PaginationControlled from "../Components/UIElements/PaginationControlled";
@@ -21,7 +22,7 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", updateMedia);
   });
 
-    /* Page-change and data-fetch handlers */
+  /* Page-change and data-fetch handlers */
   const handlePageChange = (event, value) => {
     setPage(value);
   };

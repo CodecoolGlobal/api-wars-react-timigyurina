@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ReactDOM from "react-dom";
+
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -36,7 +38,7 @@ const MessageModal = ({
     setOpen(false);
   };
 
-  return (
+  const content = (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
@@ -76,7 +78,10 @@ const MessageModal = ({
         </Fade>
       </Modal>
     </div>
-  );
+
+  )
+
+  return ReactDOM.createPortal(content, document.getElementById("modal-hook"));
 };
 
 export default MessageModal;
