@@ -27,13 +27,13 @@ const voteOnPlanet = async (req, res, next) => {
   const newVote = new Vote({
     planet: nameOfPlanet,
     date: currentTime,
-    creator: "6308a751afc38f99569cc4de", // !!!!!!!!!!!! req.userData.userId  //should get the userId from the atatched token,
+    creator: req.userData.userId, 
   });
 
   //we need to check if the userId exists beacause only those can create a vote (connection between users and votes)
   let existingUser;
   try {
-    existingUser = await User.findById("6308a751afc38f99569cc4de"); // !!!!!!!!!!!!  req.userData.userId
+    existingUser = await User.findById(req.userData.userId);
   } catch (err) {
     const error = new Error("Creating vote failed, please try again later");
     return next(error);

@@ -11,7 +11,8 @@ router.get("/planets/", votingControllers.getAllVotes);
 router.post(
   "/planets/:pid",
   fetchFromApi.fetchPlanetByIdFromApi,
-  /* authCheck, */ votingControllers.voteOnPlanet
+  authCheck,
+  votingControllers.voteOnPlanet
 );
 
 module.exports = router;

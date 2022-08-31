@@ -47,7 +47,13 @@ const narrowPadding = {
   padding: "2px",
 };
 
-function Row({ planet, residentsButtonClicked, formatPopulation, auth }) {
+function Row({
+  planet,
+  residentsButtonClicked,
+  voteButtonClicked,
+  formatPopulation,
+  auth,
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -91,7 +97,11 @@ function Row({ planet, residentsButtonClicked, formatPopulation, auth }) {
         </TableCell>
         {auth.isLoggedIn && (
           <TableCell align="center" sx={narrowPadding}>
-            <Button size="small" variant="contained">
+            <Button
+              onClick={() => voteButtonClicked(planet.url, planet.name)}
+              size="small"
+              variant="contained"
+            >
               Vote
             </Button>
           </TableCell>
@@ -140,8 +150,9 @@ function Row({ planet, residentsButtonClicked, formatPopulation, auth }) {
 const CollapsibleTable = ({
   planets,
   auth,
-  formatPopulation,
   residentsButtonClicked,
+  voteButtonClicked,
+  formatPopulation,
 }) => {
   return (
     <TableContainer component={Paper}>
@@ -167,6 +178,7 @@ const CollapsibleTable = ({
               planet={planet}
               auth={auth}
               residentsButtonClicked={residentsButtonClicked}
+              voteButtonClicked={voteButtonClicked}
               formatPopulation={formatPopulation}
             />
           ))}

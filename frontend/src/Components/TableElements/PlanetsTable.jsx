@@ -16,6 +16,8 @@ export const PlanetsTable = ({ planets }) => {
   const [loadedResidents, setLoadedResidents] = useState([]);
   const [nameOfLoadedPlanet, setNameOfLoadedPlanet] = useState("");
   const [isModalLoading, setIsModalLoading] = useState(false);
+  const [isVotingLoading, setIsVotingLoading] = useState(false);
+  const [voteSuccessMessage, setVoteSuccessMessage] = useState();
   const [error, setError] = useState();
   const [isDesktop, setDesktop] = useState(window.innerWidth > 650);
 
@@ -28,12 +30,8 @@ export const PlanetsTable = ({ planets }) => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
   });
-  
 
-  const formatPopulation = (population) => {
-    const formatted = parseInt(population).toLocaleString();
-    return isNaN(parseInt(formatted)) ? "unknown" : `${formatted} people`;
-  };
+  /* Residents handlers */
 
   const fetchResidents = async (planetId) => {
     setIsModalLoading(true);
@@ -73,16 +71,68 @@ export const PlanetsTable = ({ planets }) => {
     setResidentsModalIsOpen(false);
   };
 
+  /* Voting click handler */
+
+  const voteOnPlanet = async (urlOfPlanet, nameOfPlanet) => {
+    const arr = urlOfPlanet.split("/");
+    const idOfPlanet = arr[arr.length - 2];
+
+    setIsVotingLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:5000/vote/planets/${idOfPlanet}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+          body: JSON.stringify({}),
+        }
+      );
+      const responseData = await response.json();
+      if (!response.ok) {
+        //means I will have an error and it has a message property
+        const error = responseData.message;
+        setError(error);
+        setIsVotingLoading(false);
+        console.log(error);
+        return error;
+      }
+      setVoteSuccessMessage(`You voted successfully on planet ${nameOfPlanet}`);
+      setIsVotingLoading(false);
+      console.log(responseData);
+
+      return responseData;
+    } catch (err) {
+      setIsVotingLoading(false);
+      console.log(err);
+    }
+  };
+
+  /* Other handlers and utils */
+
+  const formatPopulation = (population) => {
+    const formatted = parseInt(population).toLocaleString();
+    return isNaN(parseInt(formatted)) ? "unknown" : `${formatted} people`;
+  };
+
   const clearError = () => {
     setError(null);
   };
 
+  const clearSuccess = () => {
+    setVoteSuccessMessage(null);
+  };
+
   return (
     <>
-      {isModalLoading ? (
+      {isModalLoading || isVotingLoading ? (
         <div className="center">
           <LoadingSpinner asOverlay />
         </div>
+      ) : voteSuccessMessage ? (
+        <MessageModal message={voteSuccessMessage} onClear={clearSuccess} />
       ) : error ? (
         <MessageModal message={error} onClear={clearError} itIsAnError />
       ) : (
@@ -100,6 +150,7 @@ export const PlanetsTable = ({ planets }) => {
             auth={auth}
             formatPopulation={formatPopulation}
             residentsButtonClicked={residentsButtonClicked}
+            voteButtonClicked={voteOnPlanet}
           />
         ) : (
           <CollapsibleTable
@@ -107,6 +158,7 @@ export const PlanetsTable = ({ planets }) => {
             auth={auth}
             formatPopulation={formatPopulation}
             residentsButtonClicked={residentsButtonClicked}
+            voteButtonClicked={voteOnPlanet}
           />
         )}
       </TableContainer>

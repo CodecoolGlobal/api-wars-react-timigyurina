@@ -38,6 +38,7 @@ const DesktopTable = ({
   auth,
   formatPopulation,
   residentsButtonClicked,
+  voteButtonClicked,
 }) => {
   return (
     <Table
@@ -99,7 +100,11 @@ const DesktopTable = ({
             </StyledTableCell>
             {auth.isLoggedIn && (
               <StyledTableCell align="center">
-                <Button size="small" variant="contained">
+                <Button
+                  onClick={() => voteButtonClicked(planet.url, planet.name)}
+                  size="small"
+                  variant="contained"
+                >
                   Vote
                 </Button>
               </StyledTableCell>
