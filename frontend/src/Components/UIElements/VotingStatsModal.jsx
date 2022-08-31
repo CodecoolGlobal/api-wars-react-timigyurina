@@ -6,7 +6,7 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
-import ResidentsTable from "../TableElements/ResidentsTable";
+import VotingStatsTable from "../TableElements/VotingStatsTable";
 
 const style = {
   display: "flex",
@@ -16,7 +16,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%",
+  width: "70%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -28,6 +28,7 @@ const buttonStyles = {
 };
 
 const VotingStatsModal = ({
+  votes,
   votingStatsModalIsOpenedFromParent,
   parentCallback,
 }) => {
@@ -44,7 +45,6 @@ const VotingStatsModal = ({
 
   return (
     <div>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -64,7 +64,7 @@ const VotingStatsModal = ({
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Voting statistics
             </Typography>
-            hallóbelló
+            <VotingStatsTable votes={votes} />
             <Button onClick={handleClose} variant="outlined" sx={buttonStyles}>
               Close
             </Button>
