@@ -1,41 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../HooksAndContext/auth-context";
 
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ResidentsModal from "../UIElements/ResidentsModal";
 import LoadingSpinner from "../UIElements/LoadingSpinner";
 import MessageModal from "../UIElements/MessageModal";
 import DesktopTable from "./DesktopTable";
 import CollapsibleTable from "./CollapsibleTable";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#002984",
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    paddingRight: 5,
-    paddingLeft: 5,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 
 export const PlanetsTable = ({ planets }) => {
   const auth = useContext(AuthContext);
@@ -56,15 +28,11 @@ export const PlanetsTable = ({ planets }) => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
   });
+  
 
   const formatPopulation = (population) => {
     const formatted = parseInt(population).toLocaleString();
     return isNaN(parseInt(formatted)) ? "unknown" : `${formatted} people`;
-  };
-
-  const emphasisedItem = {
-    fontSize: "16px",
-    fontWeight: "700",
   };
 
   const fetchResidents = async (planetId) => {

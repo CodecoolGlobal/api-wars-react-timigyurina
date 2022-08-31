@@ -39,17 +39,22 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const emphasisedItem = {
-  fontSize: "16px",
+  fontSize: "14px",
   fontWeight: "700",
 };
 
-function Row({ planet, residentsButtonClicked }) {
+const narrowPadding = {
+  padding: "2px",
+};
+
+function Row({ planet, residentsButtonClicked, formatPopulation, auth }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
+      {/* These are the main cells of a row */}
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
+        <TableCell sx={narrowPadding}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -58,11 +63,18 @@ function Row({ planet, residentsButtonClicked }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row" align="center">
+        <TableCell
+          component="th"
+          scope="row"
+          align="center"
+          sx={emphasisedItem}
+        >
           {planet.name}
         </TableCell>
-        <TableCell align="center" >{planet.population}</TableCell>
-        <TableCell align="center">
+        <TableCell align="center" sx={narrowPadding}>
+          {formatPopulation(planet.population)}
+        </TableCell>
+        <TableCell align="center" sx={narrowPadding}>
           {planet.residents.length > 0 ? (
             <Button
               size="small"
@@ -77,7 +89,15 @@ function Row({ planet, residentsButtonClicked }) {
             "No known residents"
           )}
         </TableCell>
+        {auth.isLoggedIn && (
+          <TableCell align="center" sx={narrowPadding}>
+            <Button size="small" variant="contained">
+              Vote
+            </Button>
+          </TableCell>
+        )}
       </TableRow>
+      {/* These are the collapsible cells of a row */}
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -88,20 +108,24 @@ function Row({ planet, residentsButtonClicked }) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell align="center" >Diameter</TableCell>
-                    <TableCell align="center" >Climate</TableCell>
-                    <TableCell align="center" >Terrain</TableCell>
+                    <TableCell align="center">Diameter</TableCell>
+                    <TableCell align="center">Climate</TableCell>
+                    <TableCell align="center">Terrain</TableCell>
                     <TableCell align="center">Surface water</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow key={planet.name}>
                     <TableCell component="th" scope="row" align="center">
-                      {planet.diameter}
+                      {planet.diameter} km
                     </TableCell>
-                    <TableCell align="center" >{planet.climate}</TableCell>
-                    <TableCell align="center" >{planet.terrain}</TableCell>
-                    <TableCell align="center" >{planet.surface_water}</TableCell>
+                    <TableCell align="center">{planet.climate}</TableCell>
+                    <TableCell align="center">{planet.terrain}</TableCell>
+                    <TableCell align="center">
+                      {planet.surface_water === "unknown"
+                        ? planet.surface_water
+                        : planet.surface_water + "%"}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -124,8 +148,10 @@ const CollapsibleTable = ({
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
-            <StyledTableCell sx={emphasisedItem}></StyledTableCell>
-            <StyledTableCell align="center">Name</StyledTableCell>
+            <StyledTableCell></StyledTableCell>
+            <StyledTableCell align="center" sx={emphasisedItem}>
+              Name
+            </StyledTableCell>
             <StyledTableCell align="center">Population</StyledTableCell>
 
             <StyledTableCell align="center">Residents</StyledTableCell>
@@ -139,7 +165,9 @@ const CollapsibleTable = ({
             <Row
               key={planet.name}
               planet={planet}
+              auth={auth}
               residentsButtonClicked={residentsButtonClicked}
+              formatPopulation={formatPopulation}
             />
           ))}
         </TableBody>
