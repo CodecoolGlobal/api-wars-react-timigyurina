@@ -6,6 +6,7 @@ import LoginPage from "./Pages/LoginPage";
 import Navbar from "./Components/Navigation/Navbar";
 import { AuthContext } from "./HooksAndContext/auth-context";
 import "./App.css";
+import MessageModal from "./Components/UIElements/MessageModal";
 
 let logoutTimer;
 
@@ -76,7 +77,7 @@ function App() {
         storedData.token,
         new Date(storedData.expiration)
       );
-    } 
+    }
   }, [login]);
 
   return (
@@ -94,6 +95,12 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Navbar />
+          {isLogoutMsgShown && (
+            <MessageModal
+              message="You are now logged out"
+              onClear={() => setIsLogoutMsgShown(false)}
+            />
+          )}
           <Routes>
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/register" element={<RegistrationPage />}></Route>
