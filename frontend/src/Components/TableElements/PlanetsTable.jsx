@@ -94,7 +94,7 @@ export const PlanetsTable = ({ planets }) => {
       if (!response.ok) {
         //means I will have an error and it has a message property
         const error = responseData.message;
-        setError(error);
+        setError(`There was an error during voting on planet ${nameOfPlanet}`);
         setIsVotingLoading(false);
         console.log(error);
         return error;
