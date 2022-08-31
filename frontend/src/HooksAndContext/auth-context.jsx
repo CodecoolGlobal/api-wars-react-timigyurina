@@ -9,6 +9,7 @@ Because passing it everywhere through props would be madness.
 export const AuthContext = createContext({
     isLoggedIn: false,
     userId: null,
+    username: null,
     token: null,
     login: () => {},
     logout: () => {}

@@ -51,7 +51,8 @@ const LoginForm = () => {
       setSuccess("You are now logged in");
       setIsLoading(false);
       console.log(responseData);
-      auth.login(responseData.userId, responseData.token);
+
+      auth.login(responseData.userId, responseData.username, responseData.token);
       return responseData;
     } catch (err) {
       clearInputs();

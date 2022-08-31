@@ -12,10 +12,12 @@ let logoutTimer;
 function App() {
   const [token, setToken] = useState(false);
   const [userId, setUserId] = useState(false);
+  const [username, setUsername] = useState(false);
   const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
-  const login = useCallback((uid, token, expirationDate) => {
+  const login = useCallback((uid, uname, token, expirationDate) => {
     setToken(token);
+    setUsername(uname);
     setUserId(uid);
     //check if the token is still valid (on the backend we set it to expire in 10mins) - We either have an expdate that is still valid or we set a new one
     const tokenExpirationDate =
@@ -27,6 +29,7 @@ function App() {
       "userData",
       JSON.stringify({
         userId: uid,
+        username: uname,
         token: token,
         expiration:
           new Date(tokenExpirationDate.toISOString()) + 2 * 1000 * 60 * 60,
@@ -38,6 +41,7 @@ function App() {
     setToken(null);
     setTokenExpirationDate(null); //otherwise it would not let us login again
     setUserId(null);
+    setUsername(null);
     localStorage.removeItem("userData");
   }, []);
 
@@ -66,6 +70,7 @@ function App() {
     ) {
       login(
         storedData.userId,
+        storedData.username,
         storedData.token,
         new Date(storedData.expiration)
       );
@@ -79,6 +84,7 @@ function App() {
         isLoggedIn: !!token,
         token: token,
         userId: userId,
+        username: username,
         login: login,
         logout: logout,
       }}

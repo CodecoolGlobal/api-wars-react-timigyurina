@@ -16,7 +16,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import Navlinks from "./Navlinks";
 import PersonalLinks from "./PersonalLinks";
 
-import "./Navigation.css"
+import "./Navigation.css";
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -119,31 +119,36 @@ const Navbar = () => {
           </Box>
           {/* Personal menu */}
           {auth.isLoggedIn && (
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <PersonIcon sx={{ color: "white" }} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <PersonalLinks />
-              </Menu>
-            </Box>
+            <>
+              <div className="logged-in-user">
+                Logged in as <span>{auth.username}</span>
+              </div>
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <PersonIcon sx={{ color: "white" }} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <PersonalLinks />
+                </Menu>
+              </Box>
+            </>
           )}
         </Toolbar>
       </Container>
