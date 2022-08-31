@@ -9,7 +9,19 @@ const HomePage = () => {
   const [error, setError] = useState();
   const [loadedPlanets, setLoadedPlanets] = useState([]);
   const [page, setPage] = useState(1);
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 650);
 
+  /* Screen size handlers */
+  const updateMedia = () => {
+    setDesktop(window.innerWidth > 650);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
+
+    /* Page-change and data-fetch handlers */
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -52,12 +64,6 @@ const HomePage = () => {
     fetchPlanets();
   }, [page]);
 
-/*   const openResidentsModal = (urlOfPlanet) => {
-    const arr = urlOfPlanet.split("/")
-    const idOfPlanet = arr[arr.length-2]
-    console.log(idOfPlanet);
-  }; */
-
   return (
     <div className="home-page">
       <h1>Planets of the Star Wars Universe</h1>
@@ -66,13 +72,14 @@ const HomePage = () => {
           <LoadingSpinner asOverlay />
         </div>
       ) : error ? (
-        <MessageModal message={error} onClear={clearError} itIsAnError/>
+        <MessageModal message={error} onClear={clearError} itIsAnError />
       ) : (
         <>
-          <PlanetsTable
-            planets={loadedPlanets}
-            /* onResidentsButtonClick={(id) => openResidentsModal(id)} */
-          />
+          {isDesktop ? (
+            <PlanetsTable planets={loadedPlanets} />
+          ) : (
+            <div>small</div>
+          )}
           <PaginationControlled
             val={page}
             page={page}
@@ -81,7 +88,6 @@ const HomePage = () => {
           />
         </>
       )}
-      {/* <PlanetsTable planets={loadedPlanets} /> */}
     </div>
   );
 };

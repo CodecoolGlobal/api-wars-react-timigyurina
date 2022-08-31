@@ -21,6 +21,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    paddingRight: 0,
+    paddingLeft: 0
   },
 }));
 
@@ -112,8 +114,9 @@ export const PlanetsTable = ({ planets }) => {
         />
       )}
       <TableContainer component={Paper} className="table-container">
+      
         <Table
-          sx={{ minWidth: 700 }}
+          sx={{ minWidth: 350 }}
           aria-label="customized table"
           id="planetsTable"
         >
