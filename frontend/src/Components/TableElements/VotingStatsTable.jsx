@@ -12,33 +12,35 @@ const emphasisedItem = {
 };
 
 const VotingStatsTable = ({ votes }) => {
-  <div>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={emphasisedItem}>Planet Name</TableCell>
-            <TableCell sx={emphasisedItem} align="center">
-              Received votes
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {votes.map((vote) => (
-            <TableRow
-              key={vote.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {vote.name}
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={emphasisedItem}>Planet Name</TableCell>
+              <TableCell sx={emphasisedItem} align="center">
+                Received votes
               </TableCell>
-              <TableCell align="center">{vote.count}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>;
+          </TableHead>
+          <TableBody>
+            {votes.map((vote) => (
+              <TableRow
+                key={vote.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {vote.name}
+                </TableCell>
+                <TableCell align="center">{vote.count}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
 };
 
 export default VotingStatsTable;

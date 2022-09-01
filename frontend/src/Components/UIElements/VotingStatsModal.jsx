@@ -64,7 +64,9 @@ const VotingStatsModal = ({
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Voting statistics
             </Typography>
+
             <VotingStatsTable votes={votes} />
+
             <Button onClick={handleClose} variant="outlined" sx={buttonStyles}>
               Close
             </Button>
