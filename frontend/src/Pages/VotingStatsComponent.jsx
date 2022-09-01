@@ -18,9 +18,7 @@ const VotingStatsComponent = () => {
       if (!response.ok) {
         throw new Error(data.message);
       }
-      //console.log(data);
-      //setVotes(data);
-      //setIsModalLoading(false);
+
       return data;
     } catch (err) {
       console.log(err);
@@ -65,7 +63,6 @@ const VotingStatsComponent = () => {
 
   const closeVotingStatsModal = () => {
     setVotingStatsModalIsOpen(false);
-    console.log(votes);
   };
 
   const clearError = () => {
