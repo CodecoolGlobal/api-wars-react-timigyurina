@@ -9,3 +9,10 @@
   width: 98%;
   padding: 10px;
 }
+
+/* VotingStatsTable */
+
+.votingStatsPlanetName {
+  font-size: 16px;
+  font-weight: 700;
+}

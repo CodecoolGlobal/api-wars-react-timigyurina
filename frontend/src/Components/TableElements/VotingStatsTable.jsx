@@ -6,21 +6,25 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import SortIcon from "@mui/icons-material/Sort";
+import "./TableElements.css";
 
-const emphasisedItem = {
+const styledCell = {
+  display: "flex",
+  alignItems: "baseline",
+  gap: "25px",
   fontSize: "16px",
   fontWeight: "700",
 };
 
 const VotingStatsTable = ({ votes }) => {
   const [currentSortOfVoteNum, setCurrentSortOfVoteNum] = useState("default");
-  const [currentSortOfPlanetName, setCurrentSortOfPlanetName] =
-    useState("default");
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredVotes, setFilteredVotes] = useState(votes);
 
   const voteCountSortTypes = {
     up: {
@@ -44,27 +48,43 @@ const VotingStatsTable = ({ votes }) => {
     setCurrentSort(nextSort);
   };
 
+  const filterVotes = (e) => {
+    console.log(e.target.value);
+    const keyword = e.target.value;
+    setSearchInput(e.target.value);
+
+    const results = votes.filter((vote) => {
+      return vote.name.toLowerCase().includes(keyword.toLowerCase());
+    });
+    setFilteredVotes(results);
+  };
+
   return (
     <div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell sx={emphasisedItem}>
-                <span>Planet Name</span>
-                <IconButton
+              <TableCell sx={styledCell}>
+                <div className="votingStatsPlanetName">Planet Name</div>
+                <TextField
+                  id="searchPlanetName"
+                  label="Search name of planet"
+                  type="search"
+                  variant="standard"
                   color="secondary"
-                  onClick={() =>
-                    sortVotes(
-                      currentSortOfPlanetName,
-                      setCurrentSortOfPlanetName
-                    )
-                  }
-                >
-                  <SortIcon />
-                </IconButton>
+                  value={searchInput}
+                  onChange={filterVotes}
+                  sx={[
+                    { input: { padding: "0 0 4px", margin: "0 0 8px" } },
+                    { label: { fontSize: "14px" } },
+                  ]}
+                />
               </TableCell>
-              <TableCell sx={emphasisedItem} align="center">
+              <TableCell
+                sx={{ fontSize: "16px", fontWeight: "700" }}
+                align="center"
+              >
                 <span>Received votes</span>
                 <IconButton
                   color="secondary"
@@ -79,17 +99,19 @@ const VotingStatsTable = ({ votes }) => {
           </TableHead>
 
           <TableBody>
-            {votes.sort(voteCountSortTypes[currentSortOfVoteNum].fn).map((vote) => (
-              <TableRow
-                key={vote.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {vote.name}
-                </TableCell>
-                <TableCell align="center">{vote.count}</TableCell>
-              </TableRow>
-            ))}
+            {filteredVotes
+              .sort(voteCountSortTypes[currentSortOfVoteNum].fn)
+              .map((vote) => (
+                <TableRow
+                  key={vote.name}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {vote.name}
+                  </TableCell>
+                  <TableCell align="center">{vote.count}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import VotingStatsTable from "../TableElements/VotingStatsTable";
 
-const style = {
+const boxStyle = {
   display: "flex",
   flexDirection: "column",
-  gap: "1em",
+  gap: "0.5em",
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -23,8 +23,20 @@ const style = {
   p: 2,
 };
 
+const titleStyles = {
+  borderBottom: "solid 2px #7b1fa2",
+  fontSize: "25px",
+  fontWeight: "700"
+};
+
 const buttonStyles = {
   alignSelf: "end",
+  margin: "0.5em 0 0",
+  color: "#7b1fa2",
+  ":hover": {
+    bgcolor: "#ee99fc", 
+    color: "#fff",
+  },
 };
 
 const VotingStatsModal = ({
@@ -44,7 +56,7 @@ const VotingStatsModal = ({
   };
 
   return (
-    <div>
+    <div id="votingStatsModal">
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -57,17 +69,27 @@ const VotingStatsModal = ({
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={boxStyle}>
             <button onClick={handleClose} style={buttonStyles}>
               <CloseIcon />
             </button>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
+            <Typography
+              id="transition-modal-title"
+              variant="h6"
+              component="h2"
+              sx={titleStyles}
+            >
               Voting statistics
             </Typography>
 
             <VotingStatsTable votes={votes} />
 
-            <Button onClick={handleClose} variant="outlined" sx={buttonStyles}>
+            <Button
+              onClick={handleClose}
+              variant="outlined"
+              color="secondary"
+              sx={buttonStyles}
+            >
               Close
             </Button>
           </Box>
