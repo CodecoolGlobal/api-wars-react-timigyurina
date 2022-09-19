@@ -12,7 +12,40 @@ const getAllVotes = async (req, res, next) => {
     return next(error);
   }
 
-  res.json(allVotes)
+  res.json(allVotes);
+};
+
+const getVotesOfUser = async (req, res, next) => {
+  /* The authentication part is executed asa mw and is in authCheck.js !! */
+
+  const userId = req.userData.userId;
+
+  let foundUser;
+  try {
+    foundUser = await User.findById(userId);
+  } catch (err) {
+    const error = new Error("Something went wrong, could not find user");
+    return next(error);
+  }
+
+  if (!foundUser) {
+    const error = new Error("Could not find user with this id");
+    return next(error);
+  }
+  console.log(foundUser);
+
+  let foundVotes 
+  try {
+    foundVotes = await Vote.find({creator: userId})
+  } catch (err) {
+    const error = new Error("Could not find votes, please try again later");
+    return next(error);
+  }
+  if (foundVotes.length === 0) {
+    res.json({ message: "No votes belong to this user, maybe send one?" });
+  }
+
+  res.json(foundVotes)
 };
 
 const voteOnPlanet = async (req, res, next) => {
@@ -27,7 +60,7 @@ const voteOnPlanet = async (req, res, next) => {
   const newVote = new Vote({
     planet: nameOfPlanet,
     date: currentTime,
-    creator: req.userData.userId, 
+    creator: req.userData.userId,
   });
 
   //we need to check if the userId exists beacause only those can create a vote (connection between users and votes)
@@ -62,4 +95,4 @@ const voteOnPlanet = async (req, res, next) => {
   res.status(201).json({ vote: newVote });
 };
 
-module.exports = { getAllVotes, voteOnPlanet };
+module.exports = { getAllVotes, getVotesOfUser, voteOnPlanet };

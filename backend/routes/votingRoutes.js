@@ -8,6 +8,8 @@ const router = express.Router();
 
 router.get("/planets/", votingControllers.getAllVotes);
 
+router.get("/user/:uid", authCheck, votingControllers.getVotesOfUser);
+
 router.post(
   "/planets/:pid",
   fetchFromApi.fetchPlanetByIdFromApi,

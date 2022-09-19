@@ -7,6 +7,7 @@ import Navbar from "./Components/Navigation/Navbar";
 import { AuthContext } from "./HooksAndContext/auth-context";
 import "./App.css";
 import MessageModal from "./Components/UIElements/MessageModal";
+import UserVotes from "./Pages/UserVotes";
 
 let logoutTimer;
 
@@ -24,7 +25,7 @@ function App() {
     //check if the token is still valid (on the backend we set it to expire in 10mins) - We either have an expdate that is still valid or we set a new one
     const tokenExpirationDate =
       expirationDate || new Date(new Date().getTime() + 1000 * 60 * 10);
-    console.log(tokenExpirationDate);
+    console.log(token);
     setTokenExpirationDate(tokenExpirationDate);
 
     localStorage.setItem(
@@ -106,7 +107,7 @@ function App() {
             <Route path="/register" element={<RegistrationPage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/myPage" element={<HomePage />}></Route>
-            <Route path="/myVotes" element={<HomePage />}></Route>
+            <Route path="/myVotes" element={<UserVotes />}></Route>
             <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </div>
