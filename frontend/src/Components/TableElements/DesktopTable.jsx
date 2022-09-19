@@ -44,7 +44,7 @@ const DesktopTable = ({
     <Table
       sx={{ minWidth: 350 }}
       aria-label="customized table"
-      id="planetsTable"
+      id="desktopPlanetsTable"
     >
       <TableHead>
         <TableRow>

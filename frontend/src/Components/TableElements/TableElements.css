@@ -5,9 +5,10 @@
   width: 100%;
 }
 
-#planetsTable {
+#desktopPlanetsTable {
   width: 98%;
   padding: 10px;
+  border: solid 3px #01579b;
 }
 
 /* VotingStatsTable */

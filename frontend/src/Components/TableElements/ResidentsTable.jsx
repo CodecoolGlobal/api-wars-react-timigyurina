@@ -7,9 +7,11 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 const emphasisedItem = {
-  fontSize: "16px",
+  fontSize: "14px",
   fontWeight: "700",
 };
+
+
 
 const ResidentsTable = ({ residents }) => {
   return (

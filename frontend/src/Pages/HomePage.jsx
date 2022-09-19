@@ -20,10 +20,12 @@ const HomePage = () => {
     setError(null);
   };
 
-  const fetchPlanets = async () => {
+  const fetchPlanets = async (controller) => {
     setIsLoading(true);
+
     try {
       const response = await fetch("http://localhost:5000/api/planets", {
+        signal: controller.signal,
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -43,15 +45,24 @@ const HomePage = () => {
       setIsLoading(false);
       return data;
     } catch (err) {
-      console.log(err);
-      setError(err.message);
-      setIsLoading(false);
+      console.log(err.message);
+      if (err.message !== "The user aborted a request.") {
+        setError(err.message);
+        setIsLoading(false);
+      }
       //throw err;
     }
   };
 
   useEffect(() => {
-    fetchPlanets();
+    setIsLoading(true);
+    const controller = new AbortController();
+    fetchPlanets(controller);
+
+    return () => {
+      controller.abort();
+      setIsLoading(false);
+    };
   }, [page]);
 
   return (
