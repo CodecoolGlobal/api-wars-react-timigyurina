@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import ResidentsTable from "../TableElements/ResidentsTable";
+import ModalBase from "./ModalBase";
 
 const style = {
   display: "flex",
@@ -47,34 +44,20 @@ const ResidentsModal = ({
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <button onClick={handleClose} style={buttonStyles}>
-              <CloseIcon />
-            </button>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Residents of {planet}
-            </Typography>
+      <ModalBase open={open} handleClose={handleClose} boxStyle={style}>
+        <button onClick={handleClose} style={buttonStyles}>
+          <CloseIcon />
+        </button>
+        <Typography id="transition-modal-title" variant="h6" component="h2">
+          Residents of {planet}
+        </Typography>
 
-            <ResidentsTable residents={residents} />
+        <ResidentsTable residents={residents} />
 
-            <Button onClick={handleClose} variant="outlined" sx={buttonStyles}>
-              Close
-            </Button>
-          </Box>
-        </Fade>
-      </Modal>
+        <Button onClick={handleClose} variant="outlined" sx={buttonStyles}>
+          Close
+        </Button>
+      </ModalBase>
     </div>
   );
 };
